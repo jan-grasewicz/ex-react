@@ -1,25 +1,42 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import {Formik, Form, Field} from 'formik'
+import firebase from 'firebase'
+
 import './App.css';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <Formik
+        initialValues={{email:'',message:''}}
+        onSubmit={({email,message}, resetForm) => {
+          firebase.database().ref('contact-form').push({email,message})
+          // MyImaginaryRestApiCall(user.id, values).then(
+          //   updatedUser => {
+          //     actions.setSubmitting(false);
+          //     updateUser(updatedUser);
+          //     onClose();
+          //   },
+          //   error => {
+          //     actions.setSubmitting(false);
+          //     actions.setErrors(transformMyRestApiErrorsToAnObject(error));
+          //     actions.setStatus({ msg: 'Set some arbitrary status or data' });
+          //   }
+          // );
+        }}
+        render={({ errors, status, touched, isSubmitting ,handleReset }) => (
+          <Form>
+            <Field type="email" name="email" placeholder='email'/>
+            {errors.email && touched.email && <div>{errors.email}</div>}
+            <Field type="text" name="message" placeholder='message' />
+            {/* {status && status.msg && <div>{status.msg}</div>} */}
+            <button type="submit"  onClick={handleReset}>
+              Wyślij
+            </button>
+          </Form>
+        )}
+      />
       </div>
     );
   }
