@@ -28,10 +28,10 @@ class App extends Component {
         render={({ errors, status, touched, isSubmitting ,handleReset }) => (
           <Form>
             <Field type="email" name="email" placeholder='email'/>
-            {errors.email && touched.email && <div>{errors.email}</div>}
+            {/* {errors.email && touched.email && <div>{errors.email}</div>} */}
             <Field type="text" name="message" placeholder='message' />
             {/* {status && status.msg && <div>{status.msg}</div>} */}
-            <button type="submit"  onClick={handleReset}>
+            <button type="submit" disabled={isSubmitting} onClick={handleReset}>
               Wyślij
             </button>
           </Form>
